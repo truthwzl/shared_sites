@@ -1,0 +1,1 @@
+ffmpeg+nginx建立rtmp服务器，播放实时流 http://blog.fs-linux.org/?p=137
