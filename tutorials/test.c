@@ -48,19 +48,23 @@ void ListFile(char *path)
     pDir=opendir(path);  
     while (NULL != (ent=readdir(pDir)))  
     {  
-        //printf("reclen=%d    type=%d\t", ent->d_reclen, ent->d_type);       
-        gklog_trace("%s", strlwr(ent->d_name));  
+        gklog_trace("reclen=%d type=%d\t,%s",ent->__d_version, ent->d_type,strlwr(ent->d_name));  
         char* lwr = (char*)strlwr(ent->d_name);
         if(strstr(lwr,".so"))
         {
-            load_shared(lwr);
+            char file[256];
+            strcpy(file,path);
+            strcat(file,"/");
+            strcat(file,lwr);
+            //printf("file,%s\n", file);
+            load_shared(file);
         }
     }  
 }    
   
 void loade_modules() 
 {
-    ListFile(".");
+    ListFile("./modules");
 
     char* substr=  strstr("123456a7890", "A789"); 
     printf("substr:%s\n",substr);
@@ -73,7 +77,7 @@ int main(int argc, char **argv) {
     char *error;  
     int num;
   
-    handle = dlopen ("libmy.so", RTLD_LAZY);  
+    handle = dlopen ("./modules/libmy.so", RTLD_LAZY);  
     if (!handle) {  
         fprintf (stderr, "%s\n", dlerror());  
         exit(1);  
