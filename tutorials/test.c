@@ -7,6 +7,25 @@
 #include "gk_logger.h"
 #include "api.h"
 
+#ifndef strlwr
+char *strlwr(char *s)
+{
+    char *str;
+    if( s == NULL){
+        return NULL;
+    }
+    str = s;
+    while(*str != '\0')
+    {
+        if(*str > 'A' && *str < 'Z'){
+            *str += 'a'-'A';
+        }
+        str++;
+    }
+    return s;
+}
+#endif 
+
 VM g_vm;
 void load_shared(char* file)
 {
@@ -48,7 +67,7 @@ void ListFile(char *path)
     pDir=opendir(path);  
     while (NULL != (ent=readdir(pDir)))  
     {  
-        gklog_trace("reclen=%d type=%d\t,%s",ent->__d_version, ent->d_type,strlwr(ent->d_name));  
+        gklog_trace("type=%d\t,%s", ent->d_type,strlwr(ent->d_name));  
         char* lwr = (char*)strlwr(ent->d_name);
         if(strstr(lwr,".so"))
         {
